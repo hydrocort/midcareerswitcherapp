@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Conversation {
+  id                   String    @id @default(uuid())
+  createdAt            DateTime  @default(now())
+  resumeText           String
+  resumeFileName       String
+  jobDescription       String
+  initialScore         Int?
+  initialEvaluation    String?
+  clarifyingQuestions  String?   // JSON string
+  clarifyingAnswers    String?   // JSON string
+  finalScore           Int?
+  finalEvaluation      String?
+  questions            Question[]
+}
+
+model Question {
+  id             String    @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  category       String    // HIRING_TYPICAL, HIRING_CHALLENGING, HR_TYPICAL, HR_CHALLENGING
+  questionText   String
+  attempts       Attempt[]
+  createdAt      DateTime  @default(now())
+}
+
+model Attempt {
+  id             String   @id @default(uuid())
+  questionId     String
+  question       Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  audioPath      String
+  transcription  String
+  feedback       String
+  isApproved     Boolean  @default(false)
+  createdAt      DateTime @default(now())
+}
