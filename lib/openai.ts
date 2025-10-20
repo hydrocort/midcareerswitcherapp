@@ -1,4 +1,11 @@
 import OpenAI from 'openai';
+import { Readable } from 'stream';
+import { File } from 'node:buffer';
+
+// Polyfill File for Node.js < 20
+if (typeof globalThis.File === 'undefined') {
+  globalThis.File = File as any;
+}
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -252,13 +259,22 @@ Be encouraging but honest. Provide specific, actionable suggestions for improvem
 }
 
 export async function transcribeAudio(audioBuffer: Buffer): Promise<string> {
-  const file = new File([audioBuffer], 'audio.webm', { type: 'audio/webm' });
-  
-  const transcription = await openai.audio.transcriptions.create({
-    file: file,
-    model: 'whisper-1',
-  });
+  try {
+    console.log('Transcribing audio buffer of size:', audioBuffer.length);
+    
+    // Create a File object using Node.js File API (polyfilled for Node < 20)
+    const audioFile = new File([audioBuffer], 'audio.webm', { type: 'audio/webm' });
+    
+    const transcription = await openai.audio.transcriptions.create({
+      file: audioFile,
+      model: 'whisper-1',
+    });
 
-  return transcription.text;
+    console.log('Transcription completed successfully:', transcription.text.substring(0, 50) + '...');
+    return transcription.text;
+  } catch (error) {
+    console.error('OpenAI Whisper transcription error:', error);
+    throw new Error(`Whisper API failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
 }
 

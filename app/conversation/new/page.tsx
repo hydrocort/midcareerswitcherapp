@@ -34,7 +34,8 @@ export default function NewConversation() {
       });
 
       if (!uploadResponse.ok) {
-        throw new Error('Failed to upload resume');
+        const errorData = await uploadResponse.json();
+        throw new Error(errorData.error || 'Failed to upload resume');
       }
 
       const { text: resumeText, fileName: resumeFileName } = await uploadResponse.json();
@@ -51,7 +52,8 @@ export default function NewConversation() {
       });
 
       if (!conversationResponse.ok) {
-        throw new Error('Failed to create conversation');
+        const errorData = await conversationResponse.json();
+        throw new Error(errorData.error || 'Failed to create conversation');
       }
 
       const conversation = await conversationResponse.json();
@@ -101,7 +103,7 @@ export default function NewConversation() {
               <textarea
                 id="jobDescription"
                 rows={12}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900"
                 placeholder="Paste the complete job description here..."
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}

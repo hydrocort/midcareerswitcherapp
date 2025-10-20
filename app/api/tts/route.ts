@@ -36,8 +36,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ audioUrl: publicPath });
   } catch (error) {
     console.error('Error generating speech:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to generate speech';
     return NextResponse.json(
-      { error: 'Failed to generate speech' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

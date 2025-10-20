@@ -44,8 +44,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Error transcribing audio:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to transcribe audio';
     return NextResponse.json(
-      { error: 'Failed to transcribe audio' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

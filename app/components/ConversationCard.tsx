@@ -54,21 +54,31 @@ export default function ConversationCard({
     return text.substring(0, maxLength) + '...';
   };
 
+  // Route to evaluation page if not completed, otherwise history
+  const getRoute = () => {
+    if (finalScore !== null) {
+      return `/conversation/${id}/history`;
+    }
+    return `/conversation/${id}/evaluation`;
+  };
+
   return (
-    <Link href={`/conversation/${id}/history`}>
+    <Link href={getRoute()}>
       <div className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow p-6 border border-gray-200 cursor-pointer">
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">
+        <div className="flex items-start justify-between mb-3 gap-3">
+          <div className="flex-1 min-w-0">
+            <h3 className="text-lg font-semibold text-gray-900 mb-1 truncate">
               {resumeFileName}
             </h3>
             <p className="text-sm text-gray-500">{date}</p>
           </div>
-          {getStatusBadge()}
+          <div className="flex-shrink-0">
+            {getStatusBadge()}
+          </div>
         </div>
 
-        <p className="text-sm text-gray-700 mb-4">
-          {truncateText(jobDescription, 150)}
+        <p className="text-sm text-gray-700 mb-4 line-clamp-3">
+          {truncateText(jobDescription, 250)}
         </p>
 
         <div className="flex items-center space-x-4 text-sm">

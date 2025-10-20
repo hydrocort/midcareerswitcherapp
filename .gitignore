@@ -49,4 +49,6 @@ next-env.d.ts
 # audio files
 /public/audio
 
+# folders
 /conda_setup_archive
+/data

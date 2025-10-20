@@ -40,6 +40,7 @@ export default function PracticePage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [currentAttempt, setCurrentAttempt] = useState<Attempt | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadQuestions();
@@ -83,6 +84,7 @@ export default function PracticePage() {
     if (!currentQuestion) return;
 
     setIsPlaying(true);
+    setError(null);
     try {
       const response = await fetch('/api/tts', {
         method: 'POST',
@@ -94,14 +96,24 @@ export default function PracticePage() {
         }),
       });
 
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate audio');
+      }
+
       const data = await response.json();
       setAudioUrl(data.audioUrl);
 
       const audio = new Audio(data.audioUrl);
       audio.onended = () => setIsPlaying(false);
-      audio.play();
+      audio.onerror = () => {
+        setError('Failed to play audio');
+        setIsPlaying(false);
+      };
+      await audio.play();
     } catch (error) {
       console.error('Error playing question:', error);
+      setError(error instanceof Error ? error.message : 'Failed to play question audio');
       setIsPlaying(false);
     }
   };
@@ -109,9 +121,11 @@ export default function PracticePage() {
   const handleRecordingComplete = async (audioBlob: Blob) => {
     setProcessing(true);
     setCurrentAttempt(null);
+    setError(null);
 
     try {
       // Transcribe audio
+      console.log('Starting transcription...', { blobSize: audioBlob.size, blobType: audioBlob.type });
       const formData = new FormData();
       formData.append('audio', audioBlob);
       formData.append('questionId', currentQuestion.id);
@@ -122,9 +136,23 @@ export default function PracticePage() {
         body: formData,
       });
 
-      const { transcription, audioPath } = await sttResponse.json();
+      console.log('STT Response status:', sttResponse.status);
+
+      if (!sttResponse.ok) {
+        const errorData = await sttResponse.json();
+        throw new Error(`Transcription failed: ${errorData.error || 'Unknown error'}`);
+      }
+
+      const sttData = await sttResponse.json();
+      console.log('Transcription successful:', sttData);
+      const { transcription, audioPath } = sttData;
+
+      if (!transcription) {
+        throw new Error('No transcription received from audio');
+      }
 
       // Get feedback
+      console.log('Getting feedback...');
       const feedbackResponse = await fetch('/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -135,13 +163,24 @@ export default function PracticePage() {
         }),
       });
 
-      const { attempt } = await feedbackResponse.json();
+      console.log('Feedback Response status:', feedbackResponse.status);
+
+      if (!feedbackResponse.ok) {
+        const errorData = await feedbackResponse.json();
+        throw new Error(`Feedback failed: ${errorData.error || 'Unknown error'}`);
+      }
+
+      const feedbackData = await feedbackResponse.json();
+      console.log('Feedback successful:', feedbackData);
+      const { attempt } = feedbackData;
+
       setCurrentAttempt(attempt);
 
       // Reload questions to update attempts
       await loadQuestions();
     } catch (error) {
       console.error('Error processing recording:', error);
+      setError(error instanceof Error ? error.message : 'Failed to process your recording. Please try again.');
     } finally {
       setProcessing(false);
     }
@@ -240,6 +279,13 @@ export default function PracticePage() {
         </div>
 
         <div className="space-y-6">
+          {/* Error Message */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+              <p className="text-sm text-red-800">{error}</p>
+            </div>
+          )}
+
           {/* Question Card */}
           <div className="bg-white rounded-lg shadow-md p-8">
             <div className="flex items-start justify-between mb-6">
@@ -249,13 +295,24 @@ export default function PracticePage() {
               <button
                 onClick={playQuestion}
                 disabled={isPlaying}
-                className="ml-4 p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full disabled:opacity-50 transition-colors"
+                className="ml-4 p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full disabled:opacity-50 transition-colors flex-shrink-0"
+                title="Listen to question"
+                aria-label="Play question audio"
               >
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" />
-                </svg>
+                {isPlaying ? (
+                  <svg className="w-6 h-6 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" />
+                  </svg>
+                ) : (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                  </svg>
+                )}
               </button>
             </div>
+            <p className="text-sm text-gray-500 mb-6 italic">
+              Click the speaker icon to hear the question read aloud, then record your answer below.
+            </p>
 
             {processing ? (
               <LoadingSpinner message="Processing your response..." />
