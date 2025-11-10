@@ -9,10 +9,8 @@ const nextConfig: NextConfig = {
     }
     return config;
   },
-  // Disable static optimization for API routes
-  experimental: {
-    serverComponentsExternalPackages: ['pdf-parse', 'pdfjs-dist'],
-  },
+  // External packages that should not be bundled by webpack
+  serverExternalPackages: ['pdf-parse', 'pdfjs-dist'],
 };
 
 export default nextConfig;
