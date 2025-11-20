@@ -106,7 +106,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 3. Paste the job description
 4. Click "Start Evaluation"
 
-![Creating a New Conversation](screenshots/1_create_new_conversation.png)
+<img src="screenshots/1_create_new_conversation.png" alt="Creating a New Conversation" width="100%">
 
 ### Evaluation Flow
 
@@ -115,13 +115,13 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 3. **Final Evaluation**: Get updated assessment
 4. **Proceed to Interview Practice**
 
-![Evaluation Flow 1](screenshots/2_evaluation_flow_1.png)
+<img src="screenshots/2_evaluation_flow_1.png" alt="Evaluation Flow 1" width="100%">
 
-![Evaluation Flow 2](screenshots/2_evaluation_flow_2.png)
+<img src="screenshots/2_evaluation_flow_2.png" alt="Evaluation Flow 2" width="100%">
 
-![Evaluation Flow 3](screenshots/2_evaluation_flow_3.png)
+<img src="screenshots/2_evaluation_flow_3.png" alt="Evaluation Flow 3" width="100%">
 
-![Evaluation Flow 4](screenshots/2_evaluation_flow_4.png)
+<img src="screenshots/2_evaluation_flow_4.png" alt="Evaluation Flow 4" width="100%">
 
 ### Interview Practice
 
@@ -131,15 +131,15 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 4. Receive AI feedback
 5. Retry if needed or move to next question
 
-![Interview Practice 1](screenshots/3_interview_practice_1.png)
+<img src="screenshots/3_interview_practice_1.png" alt="Interview Practice 1" width="100%">
 
-![Interview Practice 2](screenshots/3_interview_practice_2.png)
+<img src="screenshots/3_interview_practice_2.png" alt="Interview Practice 2" width="100%">
 
-![Interview Practice 3](screenshots/3_interview_practice_3.png)
+<img src="screenshots/3_interview_practice_3.png" alt="Interview Practice 3" width="100%">
 
-![Interview Practice 4](screenshots/3_interview_practice_4.png)
+<img src="screenshots/3_interview_practice_4.png" alt="Interview Practice 4" width="100%">
 
-![Interview Practice 5](screenshots/3_interview_practice_5.png)
+<img src="screenshots/3_interview_practice_5.png" alt="Interview Practice 5" width="100%">
 
 ### Viewing History
 
@@ -147,13 +147,13 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - View resume, job description, evaluations, Q&A, and all practice attempts
 - Play back your recorded responses
 
-![Viewing History 1](screenshots/4_viewing_history_1.png)
+<img src="screenshots/4_viewing_history_1.png" alt="Viewing History 1" width="100%">
 
-![Viewing History 2](screenshots/4_viewing_history_2.png)
+<img src="screenshots/4_viewing_history_2.png" alt="Viewing History 2" width="100%">
 
-![Viewing History 3](screenshots/4_viewing_history_3.png)
+<img src="screenshots/4_viewing_history_3.png" alt="Viewing History 3" width="100%">
 
-![Viewing History 4](screenshots/4_viewing_history_4.png)
+<img src="screenshots/4_viewing_history_4.png" alt="Viewing History 4" width="100%">
 
 ## Project Structure
 
