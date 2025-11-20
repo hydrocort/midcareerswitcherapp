@@ -31,9 +31,9 @@ An AI-powered web application that helps job seekers evaluate their resumes agai
 
 ## Tech Stack
 
-- **Frontend/Backend**: Next.js 14 (App Router) with TypeScript
+- **Frontend/Backend**: Next.js 15 (App Router) with TypeScript
 - **Database**: SQLite with Prisma ORM
-- **Styling**: Tailwind CSS
+- **Styling**: Tailwind CSS (v4)
 - **LLM**: OpenAI API (configurable model)
 - **Voice**: ElevenLabs (text-to-speech) + OpenAI Whisper (speech-to-text)
 - **Document Processing**: pdf-parse (PDF) + mammoth (DOCX)
@@ -106,12 +106,22 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 3. Paste the job description
 4. Click "Start Evaluation"
 
+![Creating a New Conversation](screenshots/1_create_new_conversation.png)
+
 ### Evaluation Flow
 
 1. **Initial Evaluation**: Review your score, strengths, and gaps
 2. **Clarifying Questions**: Answer questions about hidden skills (optional)
 3. **Final Evaluation**: Get updated assessment
 4. **Proceed to Interview Practice**
+
+![Evaluation Flow 1](screenshots/2_evaluation_flow_1.png)
+
+![Evaluation Flow 2](screenshots/2_evaluation_flow_2.png)
+
+![Evaluation Flow 3](screenshots/2_evaluation_flow_3.png)
+
+![Evaluation Flow 4](screenshots/2_evaluation_flow_4.png)
 
 ### Interview Practice
 
@@ -121,11 +131,29 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 4. Receive AI feedback
 5. Retry if needed or move to next question
 
+![Interview Practice 1](screenshots/3_interview_practice_1.png)
+
+![Interview Practice 2](screenshots/3_interview_practice_2.png)
+
+![Interview Practice 3](screenshots/3_interview_practice_3.png)
+
+![Interview Practice 4](screenshots/3_interview_practice_4.png)
+
+![Interview Practice 5](screenshots/3_interview_practice_5.png)
+
 ### Viewing History
 
 - Click on any conversation card from the home page
 - View resume, job description, evaluations, Q&A, and all practice attempts
 - Play back your recorded responses
+
+![Viewing History 1](screenshots/4_viewing_history_1.png)
+
+![Viewing History 2](screenshots/4_viewing_history_2.png)
+
+![Viewing History 3](screenshots/4_viewing_history_3.png)
+
+![Viewing History 4](screenshots/4_viewing_history_4.png)
 
 ## Project Structure
 
@@ -192,12 +220,27 @@ If you hit rate limits:
 ## Future Enhancements
 
 - User authentication
+- Saving questions and responses to favourites
 - Multiple resume management
 - Export reports as PDF
 - Compare multiple job applications
 - Custom question creation
 - Progress tracking and analytics
 - Mobile app version
+
+## Customizing Resume Interview Coach Settings
+
+The application offers extensive customization options to tailor the experience to your needs. You can:
+
+- **Change OpenAI Models**: Switch between `gpt-4o`, `gpt-4o-mini`, or `gpt-3.5-turbo` to balance quality and cost
+- **Customize Voice**: Select different ElevenLabs voices or use your own cloned voice
+- **Adjust Model Parameters**: Fine-tune temperature, max tokens, and other LLM settings
+- **Modify Prompts**: Customize evaluation criteria and question generation prompts
+- **Configure Database**: Change storage location or switch database providers
+- **Tune Performance**: Optimize for speed or cost reduction
+- **Customize UI**: Change colors, fonts, and styling
+
+For detailed instructions on all customization options, see **[CONFIGURATION.md](CONFIGURATION.md)**.
 
 ## License
 
