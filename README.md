@@ -46,7 +46,37 @@ An AI-powered web application that helps job seekers evaluate their resumes agai
 - OpenAI API key
 - ElevenLabs API key
 
-### 2. Installation
+### 2. Environment Configuration
+
+Copy `.env.example` to `.env` and fill in your API keys:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env`:
+
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_MODEL=gpt-4o
+ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
+ELEVENLABS_VOICE_ID=your_voice_id_here            # change only if you have a specific voice to use
+DATABASE_URL=file:./dev.db
+```
+
+**Getting API Keys:**
+
+- **OpenAI**: Sign up at https://platform.openai.com/ and create an API key
+- **ElevenLabs**: Sign up at https://elevenlabs.io/ and get your API key and voice ID from the dashboard
+
+**Changing the Model:**
+
+To use a different OpenAI model, change the `OPENAI_MODEL` value in `.env`:
+- `gpt-4o` (default, most capable)
+- `gpt-4o-mini` (faster, cheaper)
+- `gpt-3.5-turbo` (cheapest)
+
+### 3. Installation
 
 ```bash
 # Install dependencies
@@ -58,36 +88,6 @@ npx prisma generate
 # Create and sync database
 npx prisma db push
 ```
-
-### 3. Environment Configuration
-
-Copy `.env.example` to `.env.local` and fill in your API keys:
-
-```bash
-cp .env.example .env.local
-```
-
-Edit `.env.local`:
-
-```env
-OPENAI_API_KEY=your_openai_api_key_here
-OPENAI_MODEL=gpt-4o
-ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
-ELEVENLABS_VOICE_ID=your_voice_id_here
-DATABASE_URL=file:./dev.db
-```
-
-**Getting API Keys:**
-
-- **OpenAI**: Sign up at https://platform.openai.com/ and create an API key
-- **ElevenLabs**: Sign up at https://elevenlabs.io/ and get your API key and voice ID from the dashboard
-
-**Changing the Model:**
-
-To use a different OpenAI model, change the `OPENAI_MODEL` value in `.env.local`:
-- `gpt-4o` (default, most capable)
-- `gpt-4o-mini` (faster, cheaper)
-- `gpt-3.5-turbo` (cheapest)
 
 ### 4. Run the Application
 
